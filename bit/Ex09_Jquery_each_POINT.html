@@ -15,6 +15,17 @@
 			1. $(selectot).each(function(){this 활용});
 			2. $(selectot).each(function(index){this 활용});
 			3. $(selectot).each(function(index, element){element}); 대부분 이 방법을 사용
+			
+			Jquery : 
+			1. $.each(Array or Object, function(){this 활용});
+			2. $.each(Array or Object, function(index){this 활용});
+			3. $.each(Array or Object, function(index, element){element}); 대부분 이 방법을 사용
+		
+			parameter가 json 객체라면
+			var obj = {name:"홍길동", age:100}
+			
+			$(obj).each(function(key, value){});
+			
 		*/
 		$(document).ready(function() {
 			$('p').each(function() {
@@ -28,12 +39,79 @@
 				console.log("this : " + $(this).text());
 			});
 			
+			$('p').each(function(index){
+				//callback 함수 3호출
+				//consoe.log
+				
+				//index 활용하기(중복값이 없다)
+				//$(this).attr("id", "param-"+index);
+				//응용() attr >> 속성을 여러개 부여 >> jquery parmeter json 객체
+				$(this).attr(
+						{
+							"id":"param-"+index,
+							"style":"color:red",
+						})
+			});
+			
 			$('p').each(function(index, element) {
 				//callback 함수 3호출
 				console.log("index : " + index);
 				console.log(element);
 				console.log("element : " + $(element).text());
 			});
+			
+			$('#btn').click(function(){
+				alert($('#param-1').text());
+			});
+			
+			/*
+				let arr = ['사과', '배', '수박']; Array
+				let obj = {} JsonObj
+				let arr obj = [{},{},{}] ArrayObject
+			*/
+			var array = [
+				{"name":"naver","link":"www.naver.com"},
+				{"name":"daum","link":"www.daum.net"},
+				{"name":"bit","link":"www.bit.or.kr"},
+			];
+			//문제
+			//$.each(Array or Object, function(index, element){element});
+			//활용해서 name 값, link 값을 출력하세요
+			$.each(array, function(index, element){
+				//console.log(index);
+				console.log(element); //객체, 속성명, 객체["속성명"]
+				console.log(element.name+"/"+element["link"]);
+			});
+			
+			let boardobj = {
+					values:[
+						{no:1, title:"hello world"},
+						{no:2, title:"korea"},
+						{no:3, title:"bit world"}
+					],
+					search:"검색"
+			}
+			//1. $.each()사용해서 no 값, title 값을 출력하세요
+				$.each(boardobj.values,function(index,element){
+					console.log(index+"/"+element.no+","+element["title"]);
+				})
+			
+			//2. $.each(board) >> key, value 출력
+			$.each(boardobj,function(key, value){
+				console.log(key+"/"+value);
+			});
+			
+			//3. $.each() no, title, search 값을 출력하세요
+			//hint) each(){each(){} }
+			$.each(board,function(key , value){
+	            if(typeof(value) === "object"){
+	                $.each(value,function(index,obj){
+	                    console.log("index: " + index + "/" + element.no + ":" + element.title);
+	                });
+	            }else{
+	                console.log("key : " + key);
+	            }
+	        });
 		});
 	</script>
 </head>
