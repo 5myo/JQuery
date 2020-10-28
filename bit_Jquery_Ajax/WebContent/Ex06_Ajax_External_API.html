@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		//https://api.flickr.com/services/feeds/photos_public.gne?tags=raccoon&tagmode=any&format=json&jsoncallback=?
+		//tags=입력값&tagmode=any&format=json
+/*
+		$(function(){
+			$('#btn').click(function(){
+				let filckerAPI = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?"
+				let data = {tags:$('#search').val() , tagmode:"any" , format:"json"};
+				console.log(data);
+				$.getJSON(filckerAPI , data , function(data, textStatus , xhr){
+					 //console.log(data.items);
+					$('#images').empty();
+					$.each(data.items, function(index, obj){
+						$('<img>').attr("src",obj.media.m).appendTo("#images");
+						//img 태그를 생성하고 src 속성에 이미지 경로 설정  div append
+					});
+				});
+			});
+		});
+*/
+		$(function(){
+			$('#btn').click(function(){
+				let filckerAPI = "http://data.ex.co.kr/openapi/business/representFoodServiceArea?"
+				//key=test&type=json&numOfRows=20&pageNo=1&routeCode=0010"
+				//key=test&type=json&numOfRows=100&pageNo=1
+				//정보 가져오기
+				let data = {
+					key:"test", type:"json",
+					numOfRows:$("#n_search").val(), //보고싶은 데이터 건수 id
+					pageNo:"1", //페이지 숫자?
+					routeName:$("#search").val() //고속도로선 이름 id
+				};
+				console.log(data);
+				
+				// API의 정보를 가져온다 (filckerAPI , data , function(data, textStatus , xhr)?
+				$.getJSON(filckerAPI , data , function(data, textStatus , xhr){
+					 //console.log(data.items);
+					 //가공
+					$("#datalist").empty(); //.empty() 선택한 요소의 내용을 지움, 비어있는 객체인지 체크?
+					$.each(responseData.list, function(index, obj){
+						// 넣고싶은 정보 : direction, routeName, 
+						// serviceAreaName, batchMenu, salPrice 5가지
+						//obj에 있는 정보들을 .appendTo를 사용하여 #datalist로 이동한다.
+						$("<div style='display:inline-block; margin-right:10px;'></div>'").text(obj.direction).appendTo("#datalist"); 
+						$("<div style='display:inline-block; margin-right:10px;'></div>'").text(obj.routeName).appendTo("#datalist");
+						$("<div style='display:inline-block; margin-right:10px;'></div>'").text(obj.serviceAreaName).appendTo("#datalist");
+						$("<div style='display:inline-block; margin-right:10px;'></div>'").text(obj.batchMenu).appendTo("#datalist");
+						$("<div style='display:inline-block; margin-right:10px;'></div><br>'").text(obj.salePrice).appendTo("#datalist");
+					});
+				});
+			});
+		});
+	</script>
+</head>
+<body>
+	고속도로선 이름: <input type="text" id="search" placeholder="ex)서해안선 or 경부선"><br>
+	보고싶은 데이터 건수 : <input type="number" id="n_search" placeholder="보고싶은 결과수 숫자만">
+	<input type="button" value="검색하기" id="btn">
+	<hr>
+	<div id="datalist"></div>
+</body>
+</html>
